@@ -1,7 +1,9 @@
 var firstclick = null;
 var secondclick = null;
+var firstclass = null;
+var secondclass = null;
 $(document).ready(function(){
-
+        //Row 1
     $("#card1").addClass('bluemap').click(function () {
         $(this).toggleClass('apple')
     });
@@ -20,66 +22,91 @@ $(document).ready(function(){
     $("#card6").addClass('redmap').click(function () {
         $(this).toggleClass('pacman')
     });
-    $("#card7").addClass('bluemap').click(function () {
-        $(this).toggleClass('strawberry')
-    });
-    $("#card8").addClass('darkpurplemap').click(function () {
-        $(this).toggleClass('pinkghost')
-    });
-    $("#card9").addClass('greenmap').click(function () {
-        $(this).toggleClass('redghost')
-    });
-    $("#card10").addClass('lightpurplemap').click(function () {
-        $(this).toggleClass('apple')
-    });
-    $("#card11").addClass('pinkmap').click(function () {
-        $(this).toggleClass('cherry')
-    });
-    $("#card12").addClass('redmap').click(function () {
-        $(this).toggleClass('pinkghost')
-    });
-    $("#card13").addClass('bluemap').click(function () {
-        $(this).toggleClass('lightblueghost')
-    });
-    $("#card14").addClass('darkpurplemap').click(function () {
-        $(this).toggleClass('pacman')
-    });
-    $("#card15").addClass('greenmap').click(function () {
-        $(this).toggleClass('blueghost')
-    });
-    $("#card16").addClass('lightpurplemap').click(function () {
-        $(this).toggleClass('redghost')
-    });
-    $("#card17").addClass('pinkmap').click(function () {
-        $(this).toggleClass('orangeghost')
-    });
-    $("#card18").addClass('redmap').click(function () {
-        $(this).toggleClass('strawberry')
-    });
+        //Row 2
+        $("#card7").addClass('bluemap').click(function () {
+            $(this).toggleClass('strawberry')
+        });
+        $("#card8").addClass('darkpurplemap').click(function () {
+            $(this).toggleClass('pinkghost')
+        });
+        $("#card9").addClass('greenmap').click(function () {
+            $(this).toggleClass('redghost')
+        });
+        $("#card10").addClass('lightpurplemap').click(function () {
+            $(this).toggleClass('apple')
+        });
+        $("#card11").addClass('pinkmap').click(function () {
+            $(this).toggleClass('cherry')
+        });
+        $("#card12").addClass('redmap').click(function () {
+            $(this).toggleClass('pinkghost')
+        });
+                //Row 3
+            $("#card13").addClass('bluemap').click(function () {
+                $(this).toggleClass('lightblueghost')
+            });
+            $("#card14").addClass('darkpurplemap').click(function () {
+                $(this).toggleClass('pacman')
+            });
+            $("#card15").addClass('greenmap').click(function () {
+                $(this).toggleClass('blueghost')
+            });
+            $("#card16").addClass('lightpurplemap').click(function () {
+                $(this).toggleClass('redghost')
+            });
+            $("#card17").addClass('pinkmap').click(function () {
+                $(this).toggleClass('orangeghost')
+            });
+            $("#card18").addClass('redmap').click(function () {
+                $(this).toggleClass('strawberry')
+            });
 
 
 
+        function resetclicks() {
+            firstclick=null;
+            secondclick=null;
+            console.log("clicks have been reset")
+        }
 
-        function apple() {
+        function clickcard() {
             $(".card").click(function(){
                 console.log(this);
                 if (firstclick === null) {
                     firstclick = this;
+                    firstclass = $(this)[0].classList[2];
                     return;
                 }
                 else {
                     secondclick = this;
+                    secondclass = $(this)[0].classList[2];
                     if ($(firstclick).css("background-image") === $(secondclick).css("background-image")){
-                        console.log("23432");
-                        $(firstclick).css("visibility","hidden");
-                        $(secondclick).css("visibility","hidden");
+                        console.log("It's a match!");
+                        setTimeout(function(){
+                            $(firstclick).css("visibility","hidden");
+                            $(secondclick).css("visibility","hidden");
+                            resetclicks();
+                        },150);
                     }
                     else {
-                        console.log('later');
+                        if (firstclick !== secondclick) {
+                            setTimeout(function(){
+                                $(firstclick).toggleClass(firstclass);
+                                $(secondclick).toggleClass(secondclass);
+                                resetclicks();
+                            }, 250);
+                        }
+                            console.log('you picked the wrong cards');
                     }
                 }
             })}
-    apple();
+    clickcard();
+
+        // function nodoubleclick() {
+        //     $(".card").click(function(){
+        //         if ($(.card ID() === .card ID()))
+        //     })
+        // }
 
 });  //end of document.ready function
 
