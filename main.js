@@ -5,7 +5,7 @@ var secondclass = null;
 var firstid = null;
 var secondid = null;
 var total_possible_matches = 2;
-var match = 0;
+var match_counter = 0;
 $(document).ready(function(){
         //Row 1
     $("#card1").addClass('bluemap').click(function () {
@@ -99,6 +99,13 @@ $(document).ready(function(){
                                 $(secondclick).css("visibility","hidden");
                                 resetclicks();
                             },150);
+                            match_counter += 1;
+                                if (match_counter === 9) {
+                                    setTimeout(function(){
+                                        alert("You won!");
+                                        resetclicks();
+                                    },750);
+                                }
                         }
                             else {
                                 if (firstclick !== secondclick) {
