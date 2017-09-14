@@ -6,6 +6,10 @@ var firstid = null;
 var secondid = null;
 var total_possible_matches = 2;
 var match_counter = 0;
+var matches = 0;
+var attempts = 0;
+var accuracy = 0;
+var games_played = 0;
 $(document).ready(function(){
         //Row 1
     $("#card1").addClass('bluemap').click(function () {
@@ -119,11 +123,6 @@ $(document).ready(function(){
                         }
                     }
                     //end of if statement
-
-
-
-
-
                     // if ($(firstclick).css("background-image") === $(secondclick).css("background-image")){
                     //     console.log("It's a match!");
                     //     setTimeout(function(){
@@ -143,12 +142,34 @@ $(document).ready(function(){
                     //         console.log('you picked the wrong cards');
                     // }
                 }
-            })
+            });
+            $(".reset").click(function(){
+                reset_stats();
+                games_played = games_played+1;
+                    $
+                resetclicks();
+            });
         }
     clickcard();
+        // display_stats();
 
-
-
+                function display_stats() {
+                    $(".games-played .value").text(games_played);
+                    $(".attempts .value").text(attempts);
+                    var percentage = ((accuracy / attempts)+"%");
+                    $(".accuracy .value").text(percentage);
+                }
+                    function reset_stats(){
+                        accuracy = 0;
+                        matches = 0;
+                        attempts = 0;
+                        display_stats();
+                    }
+                // $(".reset").click(function(){
+                //     reset_stats();
+                //     games_played = games_played+1;
+                //     firstclick
+                // });
 });  //end of document.ready function
 
 
