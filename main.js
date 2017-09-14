@@ -2,6 +2,10 @@ var firstclick = null;
 var secondclick = null;
 var firstclass = null;
 var secondclass = null;
+var firstid = null;
+var secondid = null;
+var total_possible_matches = 2;
+var match = 0;
 $(document).ready(function(){
         //Row 1
     $("#card1").addClass('bluemap').click(function () {
@@ -61,8 +65,6 @@ $(document).ready(function(){
                 $(this).toggleClass('strawberry')
             });
 
-
-
         function resetclicks() {
             firstclick=null;
             secondclick=null;
@@ -75,38 +77,70 @@ $(document).ready(function(){
                 if (firstclick === null) {
                     firstclick = this;
                     firstclass = $(this)[0].classList[2];
+                    firstid = firstclick.id;
                     return;
                 }
                 else {
                     secondclick = this;
                     secondclass = $(this)[0].classList[2];
-                    if ($(firstclick).css("background-image") === $(secondclick).css("background-image")){
-                        console.log("It's a match!");
-                        setTimeout(function(){
-                            $(firstclick).css("visibility","hidden");
-                            $(secondclick).css("visibility","hidden");
-                            resetclicks();
-                        },150);
+                    secondid = secondclick.id;
+
+                    if (firstid === secondid){
+                        resetclicks();
+                        $(firstclick).toggleClass(firstclass);
+                        $(secondclick).toggleClass(secondclass);
+                        console.log('dont pick the same card')
                     }
                     else {
-                        if (firstclick !== secondclick) {
+                        if ($(firstclick).css("background-image") === $(secondclick).css("background-image")){
+                            console.log("It's a match!");
                             setTimeout(function(){
-                                $(firstclick).toggleClass(firstclass);
-                                $(secondclick).toggleClass(secondclass);
+                                $(firstclick).css("visibility","hidden");
+                                $(secondclick).css("visibility","hidden");
                                 resetclicks();
-                            }, 250);
+                            },150);
                         }
-                            console.log('you picked the wrong cards');
+                            else {
+                                if (firstclick !== secondclick) {
+                                    setTimeout(function(){
+                                        $(firstclick).toggleClass(firstclass);
+                                        $(secondclick).toggleClass(secondclass);
+                                        resetclicks();
+                                    }, 250);
+                                }
+                                console.log('you picked the wrong cards');
+                        }
                     }
+                    //end of if statement
+
+
+
+
+
+                    // if ($(firstclick).css("background-image") === $(secondclick).css("background-image")){
+                    //     console.log("It's a match!");
+                    //     setTimeout(function(){
+                    //         $(firstclick).css("visibility","hidden");
+                    //         $(secondclick).css("visibility","hidden");
+                    //         resetclicks();
+                    //     },150);
+                    // }
+                    // else {
+                    //     if (firstclick !== secondclick) {
+                    //         setTimeout(function(){
+                    //             $(firstclick).toggleClass(firstclass);
+                    //             $(secondclick).toggleClass(secondclass);
+                    //             resetclicks();
+                    //         }, 250);
+                    //     }
+                    //         console.log('you picked the wrong cards');
+                    // }
                 }
-            })}
+            })
+        }
     clickcard();
 
-        // function nodoubleclick() {
-        //     $(".card").click(function(){
-        //         if ($(.card ID() === .card ID()))
-        //     })
-        // }
+
 
 });  //end of document.ready function
 
