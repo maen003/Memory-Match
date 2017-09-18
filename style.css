@@ -27,20 +27,59 @@ body {
     background-repeat:no-repeat;
     margin-left:auto;
     margin-right:auto;
-    transform:translate(-9%,7%);
+    transform:translate(0%,7%);
 }
 
 #logo {
-    /*background-image: url("../memory_match/images/pacman.gif");*/
-    background-size:contain;
+    /*background-image: url("../memory_match/images/cherry.png");*/
+    background-size:30%;
     background-repeat:no-repeat;
     display:inline-block;
-    width:8vw;
-    height:10vh;
-    margin:40px 10px 10px 10px;
+    position:fixed;
+    width:21vw;
+    height:40vh;
+    margin:47px 10px 10px 10px;
     padding: 10px;
-    transform:translate(40%,20%);
+    transform:translate(390%,125%);
 }
+.addcherry {
+    background-image: url("../memory_match/images/cherry.png");
+    background-size:40%;
+    background-repeat:no-repeat;
+    display:inline-block;
+    position:fixed;
+    width:12vw;
+    height:40vh;
+    margin:47px 10px 10px 10px;
+    padding: 10px;
+}
+.addapple {
+    background-image: url("../memory_match/images/apple1.png");
+    background-size:40%;
+    background-repeat:no-repeat;
+    display:inline-block;
+    position:fixed;
+    width:12vw;
+    height:40vh;
+    margin:47px 10px 10px 10px;
+    padding: 10px;
+    transform: translateY(22%);
+}
+.addstrawberry {
+    background-image: url("../memory_match/images/strawberry.png");
+    background-size:40%;
+    background-repeat:no-repeat;
+    display:inline-block;
+    position:fixed;
+    width:12vw;
+    height:40vh;
+    margin:47px 10px 10px 10px;
+    padding: 10px;
+    transform: translateY(45%);
+}
+
+
+
 @keyframes blink {
     30% {opacity:0;}
 }
@@ -57,6 +96,8 @@ body {
     transform:translate(20%);
     animation: blink 1s linear infinite
 }
+
+
 .game-score {
     background-image: url("../memory_match/images/gamescore.png");
     width:50px;
@@ -147,8 +188,8 @@ body {
 }
 
 .card {
-    height: 22vh;
-    width: 11vw;
+    height: 165px;
+    width: 160px;
     display: inline-block;
     margin: auto;
     vertical-align:middle;
@@ -183,7 +224,17 @@ body {
     position:relative;
     top:50px;
 }
-
+.playagain {
+    background-image: url("../memory_match/images/playagain.png");
+    width:7.5vw;
+    display:block;
+    background-repeat:no-repeat;
+    background-size:contain;
+    height:20px;
+    margin-top:20px;
+    transform:translate(20%);
+    animation: blink 1s linear infinite
+}
 
 .bluemap {
     background-image:url("../memory_match/images/maps/bluemap.png");

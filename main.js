@@ -115,12 +115,15 @@ function resetclicks() {
                             }
                             else if (showcardface === 'cherry') {
                                 eatingfruit.play();
+                                $("#gotcherry").addClass("addcherry");
                             }
                             else if (showcardface === 'strawberry') {
                                 eatingfruit.play();
+                                $("#gotstrawberry").addClass("addstrawberry");
                             }
                             else if (showcardface === 'apple') {
                                 eatingfruit.play();
+                                $("#gotapple").addClass("addapple");
                             }
                             else if (showcardface === 'pacman') {
                                 pacmanchomp.play();
@@ -131,7 +134,7 @@ function resetclicks() {
                             $(firstclick).addClass("hidden");
                             $(secondclick).addClass("hidden");
                             resetclicks();
-                        },270);
+                        },200);
                         matches+=1;
                         if (matches === 9) {
                             setTimeout(function(){
@@ -139,7 +142,10 @@ function resetclicks() {
                             },600);
                             setTimeout(function(){
                                 console.log("You won!");
-                                $("#game-area").addClass("insertcointoplay");
+                                $("#gotcherry").removeClass("addcherry");
+                                $("#gotstrawberry").removeClass("addstrawberry");
+                                $("#gotapple").removeClass("addapple");
+                                $("#game-area").addClass("playagain");
                                 reset();
                             },200);
                         }
@@ -152,7 +158,7 @@ function resetclicks() {
                                 attempts+=1;
                                 display_stats();
                                 resetclicks();
-                            }, 250);
+                            }, 200);
                         };
                         console.log('you picked the wrong cards');
                     }
@@ -245,8 +251,12 @@ function resetclicks() {
             youwon.pause();
             startgame.play();
             games_played++;
-            $("body").addClass("bodyimage");
+            // $("body").addClass("bodyimage");
             $("#game-area").removeClass("insertcointoplay");
+            $("#game-area").removeClass("playagain");
+            $("#gotcherry").removeClass("addcherry");
+            $("#gotstrawberry").removeClass("addstrawberry");
+            $("#gotapple").removeClass("addapple");
             console.log('hello!');
             createcards();
         })
