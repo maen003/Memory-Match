@@ -10,74 +10,67 @@ var matches = 0;
 var attempts = 0;
 var accuracy = 0;
 var games_played = 0;
-$(document).ready(function(){
-        //Row 1
-    $("#card1").addClass('bluemap').click(function () {
-        $(this).toggleClass('apple')
-    });
-    $("#card2").addClass('darkpurplemap').click(function () {
-        $(this).toggleClass('blueghost')
-    });
-    $("#card3").addClass('greenmap').click(function () {
-        $(this).toggleClass('cherry')
-    });
-    $("#card4").addClass('lightpurplemap').click(function () {
-        $(this).toggleClass('lightblueghost')
-    });
-    $("#card5").addClass('pinkmap').click(function () {
-        $(this).toggleClass('orangeghost')
-    });
-    $("#card6").addClass('redmap').click(function () {
-        $(this).toggleClass('pacman')
-    });
-        //Row 2
-        $("#card7").addClass('bluemap').click(function () {
-            $(this).toggleClass('strawberry')
-        });
-        $("#card8").addClass('darkpurplemap').click(function () {
-            $(this).toggleClass('pinkghost')
-        });
-        $("#card9").addClass('greenmap').click(function () {
-            $(this).toggleClass('redghost')
-        });
-        $("#card10").addClass('lightpurplemap').click(function () {
-            $(this).toggleClass('apple')
-        });
-        $("#card11").addClass('pinkmap').click(function () {
-            $(this).toggleClass('cherry')
-        });
-        $("#card12").addClass('redmap').click(function () {
-            $(this).toggleClass('pinkghost')
-        });
-                //Row 3
-            $("#card13").addClass('bluemap').click(function () {
-                $(this).toggleClass('lightblueghost')
-            });
-            $("#card14").addClass('darkpurplemap').click(function () {
-                $(this).toggleClass('pacman')
-            });
-            $("#card15").addClass('greenmap').click(function () {
-                $(this).toggleClass('blueghost')
-            });
-            $("#card16").addClass('lightpurplemap').click(function () {
-                $(this).toggleClass('redghost')
-            });
-            $("#card17").addClass('pinkmap').click(function () {
-                $(this).toggleClass('orangeghost')
-            });
-            $("#card18").addClass('redmap').click(function () {
-                $(this).toggleClass('strawberry')
-            });
+var matchedarray = [];
+var firstmatchfront = null;
+var secondmatchfront = null;
+var firstmatchback = null;
+var secondmatchback = null;
+var hiddenitems = null;
+var matchedelements = null;
+var eatingghost = new Audio("../memory_match/images/pacman_eatghost.wav");
+var eatingfruit = new Audio("../memory_match/images/pacman_eatfruit.wav");
+var pacmanchomp = new Audio("../memory_match/images/pacman_chomp.wav");
+var youwon = new Audio("../memory_match/images/pacman_intermission.wav");
+var startgame = new Audio("../memory_match/images/pacman_beginning.wav");
 
-        function resetclicks() {
-            firstclick=null;
-            secondclick=null;
-            console.log("clicks have been reset")
+$(document).ready(function(){
+    // createcards();
+    insertcointocontinue();
+});  //end of document.ready function
+        function createcards() {
+
+            var Index = 0;
+            var cardBack = ["bluemap", "darkpurplemap", "greenmap", "lightpurplemap", "pinkmap", "redmap"];
+            var cardFaces = ["apple","apple","blueghost","blueghost","cherry","cherry","lightblueghost","lightblueghost","orangeghost","orangeghost","pacman","pacman","strawberry","strawberry","pinkghost","pinkghost","redghost","redghost"];
+            var randomFaces = randomgenerator(cardFaces);
+            var classIndex = 0;
+
+                for (var i = 0; i < 18; i++){
+                    var front = $("<div>").addClass('card ' + cardBack[classIndex]);
+                   var frontcard = front.attr('cardFace',randomFaces[i]);
+                    classIndex++;
+                    $("#game-area").append(front);
+                    if (classIndex === 6){
+                        classIndex = 0;
+                    }
+                }
+            clickcard();
+            display_stats();
+            reset();
+}  //end of createcards();
+
+function resetclicks() {
+    firstclick=null;
+    secondclick=null;
+    console.log("clicks have been reset")
+}
+
+    function randomgenerator(originalArray) {
+        var array = [];
+        for(var i=0;i<18;i++) {
+            var maxIndex = originalArray.length;
+            randomnumber = Math.floor(Math.random()*maxIndex);
+            var arrayItem = originalArray.splice(randomnumber,1);
+            array.push(arrayItem[0]);
         }
+        return array;
+    }
 
         function clickcard() {
             $(".card").click(function(){
                 console.log(this);
+                var showcardface = $(this).attr("cardface");
+                $(this).addClass(showcardface);
                 if (firstclick === null) {
                     firstclick = this;
                     firstclass = $(this)[0].classList[2];
@@ -88,105 +81,174 @@ $(document).ready(function(){
                     secondclick = this;
                     secondclass = $(this)[0].classList[2];
                     secondid = secondclick.id;
+                    $(this).addClass(showcardface);
 
-                    if (firstid === secondid){
+                    if (firstclick === secondclick){
+                        $(firstclick).removeClass(showcardface);
+                        $(secondclick).removeClass(showcardface);
                         resetclicks();
-                        $(firstclick).toggleClass(firstclass);
-                        $(secondclick).toggleClass(secondclass);
                         console.log('dont pick the same card')
                     }
-                    else {
-                        if ($(firstclick).css("background-image") === $(secondclick).css("background-image")){
-                            console.log("It's a match!");
+
+
+                    if ($(firstclick).attr("cardface") === $(secondclick).attr("cardface")){
+                        console.log("It's a match!");
+                        firstmatch = firstclick;
+                        secondmatch = secondclick;
+                        matchedarray.push(secondmatch.classList[2]);
+                        matchedelements = matchedarray.toString();
+
+                            if (showcardface === 'blueghost') {
+                                eatingghost.play();
+                            }
+                            else if (showcardface === 'lightblueghost') {
+                                eatingghost.play();
+                            }
+                            else if (showcardface === 'redghost') {
+                                eatingghost.play();
+                            }
+                            else if (showcardface === 'pinkghost') {
+                                eatingghost.play();
+                            }
+                            else if (showcardface === 'orangeghost') {
+                                eatingghost.play();
+                            }
+                            else if (showcardface === 'cherry') {
+                                eatingfruit.play();
+                            }
+                            else if (showcardface === 'strawberry') {
+                                eatingfruit.play();
+                            }
+                            else if (showcardface === 'apple') {
+                                eatingfruit.play();
+                            }
+                            else if (showcardface === 'pacman') {
+                                pacmanchomp.play();
+                            }
+                        setTimeout(function(){
+                            attempts+=1;
+                            display_stats();
+                            $(firstclick).addClass("hidden");
+                            $(secondclick).addClass("hidden");
+                            resetclicks();
+                        },270);
+                        matches+=1;
+                        if (matches === 9) {
                             setTimeout(function(){
-                                $(firstclick).css("visibility","hidden");
-                                $(secondclick).css("visibility","hidden");
-                                resetclicks();
-                            },150);
-                            match_counter += 1;
-                                if (match_counter === 9) {
-                                    setTimeout(function(){
-                                        alert("You won!");
-                                        resetclicks();
-                                    },750);
-                                }
-                        }
-                            else {
-                                if (firstclick !== secondclick) {
-                                    setTimeout(function(){
-                                        $(firstclick).toggleClass(firstclass);
-                                        $(secondclick).toggleClass(secondclass);
-                                        resetclicks();
-                                    }, 250);
-                                }
-                                console.log('you picked the wrong cards');
+                                youwon.play();
+                            },600);
+                            setTimeout(function(){
+                                console.log("You won!");
+                                $("#game-area").addClass("insertcointoplay");
+                                reset();
+                            },200);
                         }
                     }
-                    //end of if statement
-                    // if ($(firstclick).css("background-image") === $(secondclick).css("background-image")){
-                    //     console.log("It's a match!");
-                    //     setTimeout(function(){
-                    //         $(firstclick).css("visibility","hidden");
-                    //         $(secondclick).css("visibility","hidden");
-                    //         resetclicks();
-                    //     },150);
-                    // }
-                    // else {
-                    //     if (firstclick !== secondclick) {
-                    //         setTimeout(function(){
-                    //             $(firstclick).toggleClass(firstclass);
-                    //             $(secondclick).toggleClass(secondclass);
-                    //             resetclicks();
-                    //         }, 250);
-                    //     }
-                    //         console.log('you picked the wrong cards');
-                    // }
+                    else {
+                        if (firstclick !== secondclick) {
+                            setTimeout(function(){
+                                hide_card(firstclick);
+                                hide_card(secondclick);
+                                attempts+=1;
+                                display_stats();
+                                resetclicks();
+                            }, 250);
+                        };
+                        console.log('you picked the wrong cards');
+                    }
+
                 }
-            });
-            $(".reset").click(function(){
-                reset_stats();
-                games_played = games_played+1;
-                    $
-                resetclicks();
             });
         }
-    clickcard();
-        // display_stats();
-
-                function display_stats() {
-                    $(".games-played .value").text(games_played);
-                    $(".attempts .value").text(attempts);
-                    var percentage = ((accuracy / attempts)+"%");
-                    $(".accuracy .value").text(percentage);
+    function hide_card(card)  {
+            var showcardface = $(card).attr("cardface");
+            $(card).removeClass(showcardface);
+        }
+        function display_stats() {
+            $(".games-played .value").text(games_played);
+                if (games_played < 10) {
+                    $(".games-played .value").text("0" + games_played);
                 }
+            $(".attempts .value").text(attempts);
+                if (attempts < 10) {
+                    $(".attempts .value").text('0' + attempts)
+                }
+                accuracy = Math.floor(matches/attempts*100)+"%";
+                    if (matches===0&attempts===0){
+                        accuracy=0 + "%";
+                                            }
+            $(".accuracy .value").text(accuracy);
+                                                 }
                     function reset_stats(){
                         accuracy = 0;
                         matches = 0;
                         attempts = 0;
                         display_stats();
-                    }
-                // $(".reset").click(function(){
-                //     reset_stats();
-                //     games_played = games_played+1;
-                //     firstclick
-                // });
-});  //end of document.ready function
+                        // if (games_played === 10) {
+                        //     $(".games-played .value").text(games_played);
+                        // }
+                                         }
+
+                            function reset() {
+                                $(".reset").click(function(){
+                                    // games_played++;
+                                    console.log('game has been reset');
+                                    $("#game-area").html("");
+                                    createnewcards();
+                                    // $(".card").removeClass("hidden");
+                                    // $(".card").removeClass(matchedelements);
+                                    if (firstclick !== null) {
+                                        var turnbackonecard = firstclick.classList[2];
+                                        $(firstclick).removeClass(turnbackonecard);
+                                        resetclicks();
+                                    }
+                                    //push matched elements to an array so that I can call them back later whenever i reset the game
+                                    //also see if i can reset the values inside the array everytime I press the reset button, maybe another function
+                                    reset_stats();
+                                        });
+
+                                        function randomize() {
+                                            for(var i=0;i<18;i++) {
+                                                var random = Math.floor(Math.random()* 18);
+                                                console.log(random)
+                                            }
+                                        }
+                                    }
+                           function turnback() {
+                               $(firstmatch).css("visibility","visible");
+                                 $(secondmatch).css("visibility","visible");
+                                   $(firstmatch).toggleClass(firstclass);
+                                    $(secondmatch).toggleClass(secondclass);
+                                    }
 
 
-    // var cherry = null;
-    // var apple = null;
-    // var pacman = null;
-    // var redghost = null;
-    // var blueghost = null;
-    // var lightblueghost = null;
-    // var pinkghost = null;
-    // var strawberry = null;
-    // var orangeghost = null;
+                function createnewcards() {
+                    var Index = 0;
+                    var cardBack = ["bluemap", "darkpurplemap", "greenmap", "lightpurplemap", "pinkmap", "redmap"];
+                    var cardFaces = ["apple","apple","blueghost","blueghost","cherry","cherry","lightblueghost","lightblueghost","orangeghost","orangeghost","pacman","pacman","strawberry","strawberry","pinkghost","pinkghost","redghost","redghost"];
+                    var randomFaces = randomgenerator(cardFaces);
+                    var classIndex = 0;
 
-
-
-
-
-
-
-
+            for (var i = 0; i < 18; i++){
+                var front = $("<div>").addClass('card ' + cardBack[classIndex]);
+                var frontcard = front.attr('cardFace',randomFaces[i]);
+                classIndex++;
+                $("#game-area").append(front);
+                if (classIndex === 6){
+                    classIndex = 0;
+                }
+            }
+            clickcard();
+           }
+   function insertcointocontinue() {
+        $(".reset").click(function(){
+            youwon.pause();
+            startgame.play();
+            games_played++;
+            $("body").addClass("bodyimage");
+            $("#game-area").removeClass("insertcointoplay");
+            console.log('hello!');
+            createcards();
+        })
+   }
+var randomnumber = null;
