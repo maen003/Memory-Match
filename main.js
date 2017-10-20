@@ -87,7 +87,8 @@ function resetclicks() {
                         $(firstclick).removeClass(showcardface);
                         $(secondclick).removeClass(showcardface);
                         resetclicks();
-                        console.log('dont pick the same card')
+                        console.log('dont pick the same card');
+                        return;
                     }
 
 
@@ -141,7 +142,7 @@ function resetclicks() {
                                 youwon.play();
                             },600);
                             setTimeout(function(){
-                                console.log("You won!");
+                                console.log("You get a cake!");
                                 $("#gotcherry").removeClass("addcherry");
                                 $("#gotstrawberry").removeClass("addstrawberry");
                                 $("#gotapple").removeClass("addapple");
